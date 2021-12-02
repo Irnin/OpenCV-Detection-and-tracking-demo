@@ -25,6 +25,7 @@
 /* Begin PBXFileReference section */
 		828B4FC4274972AC00E7B243 /* OpenCV Projekt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenCV Projekt"; sourceTree = BUILT_PRODUCTS_DIR; };
 		828B4FC7274972AC00E7B243 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
+		828B4FCE2749730900E7B243 /* OpenCV Projekt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OpenCV Projekt.entitlements"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -57,6 +58,7 @@
 		828B4FC6274972AC00E7B243 /* OpenCV Projekt */ = {
 			isa = PBXGroup;
 			children = (
+				828B4FCE2749730900E7B243 /* OpenCV Projekt.entitlements */,
 				828B4FC7274972AC00E7B243 /* main.c */,
 			);
 			path = "OpenCV Projekt";
@@ -240,20 +242,70 @@
 		828B4FCC274972AC00E7B243 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "OpenCV Projekt/OpenCV Projekt.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FFF7M27MJ8;
 				ENABLE_HARDENED_RUNTIME = YES;
+				OTHER_LDFLAGS = (
+					"-I/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/include/opencv",
+					"-lopencv_videostab",
+					"-lopencv_video",
+					"-lopencv_ts",
+					"-lopencv_superres",
+					"-lopencv_stitching",
+					"-lopencv_photo",
+					"-lopencv_ocl",
+					"-lopencv_objdetect",
+					"-lopencv_nonfree",
+					"-lopencv_ml",
+					"-lopencv_legacy",
+					"-lopencv_imgproc",
+					"-lopencv_highgui",
+					"-lopencv_gpu",
+					"-lopencv_flann",
+					"-lopencv_features2d",
+					"-lopencv_core",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-L/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/include/**";
 			};
 			name = Debug;
 		};
 		828B4FCD274972AC00E7B243 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CODE_SIGN_ENTITLEMENTS = "OpenCV Projekt/OpenCV Projekt.entitlements";
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = FFF7M27MJ8;
 				ENABLE_HARDENED_RUNTIME = YES;
+				OTHER_LDFLAGS = (
+					"-I/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/include/opencv",
+					"-lopencv_videostab",
+					"-lopencv_video",
+					"-lopencv_ts",
+					"-lopencv_superres",
+					"-lopencv_stitching",
+					"-lopencv_photo",
+					"-lopencv_ocl",
+					"-lopencv_objdetect",
+					"-lopencv_nonfree",
+					"-lopencv_ml",
+					"-lopencv_legacy",
+					"-lopencv_imgproc",
+					"-lopencv_highgui",
+					"-lopencv_gpu",
+					"-lopencv_flann",
+					"-lopencv_features2d",
+					"-lopencv_core",
+					"-lopencv_contrib",
+					"-lopencv_calib3d",
+					"-L/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/lib",
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				SYSTEM_HEADER_SEARCH_PATHS = "/opt/homebrew/Cellar/opencv@2/2.4.13.7_12/include/**";
 			};
 			name = Release;
 		};
