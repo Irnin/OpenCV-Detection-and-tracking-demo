@@ -5,9 +5,15 @@
 #include <stdlib.h>
 #include <string.h>
 
-const char *ProjectPath = "/Users/lukaszmichalak/Documents/Programowanie/OpenCV Projekt";
+//Path to main project
+#define projectPath "/Users/lukaszmichalak/Documents/Programowanie/C/OpenCV Projekt/"
+#define haarCascadePath "/OpenCV Projekt/haar cascades/"
 
-void drow(IplImage* in, IplImage* test, char*, int x, int y, int width, int height, int size);
+struct thingToTrack
+{
+    char* filePath;
+    char* name;
+};
 
 static void drawOptFlowMap(const CvMat* flow, CvMat* cflowmap, int step, double scale, CvScalar color, IplImage* test)
 {
@@ -18,9 +24,39 @@ static void drawOptFlowMap(const CvMat* flow, CvMat* cflowmap, int step, double 
             CvPoint2D32f fxy = CV_MAT_ELEM(*flow, CvPoint2D32f, y, x);
             if(x != cvRound(x+fxy.x) && y != cvRound(y+fxy.y))
                 cvLine(test, cvPoint(x,y), cvPoint(cvRound(x+fxy.x), cvRound(y+fxy.y)), color, 10, 8, 0);
-            //cvCircle(cflowmap, cvPoint(x,y), 2, color, -1, 8, 0);
         }
 }
+
+void drow(IplImage* in, IplImage* tray, char* text, int x0, int y0, int width, int height, int size)
+{
+    CvFont font = cvFont(0.8, 2);
+    
+    long position;
+    char *out = malloc(60 * sizeof(char));
+    char *positionX = malloc(60 * sizeof(char));
+    char *positionY = malloc(60 * sizeof(char));
+    strcat(out, text);
+    strcat(out, " x: ");
+    
+    position = x0+width/2;
+    sprintf(positionX, "%ld", position);
+    strcat(out, positionX);
+    
+    strcat(out, " y: ");
+    
+    position = y0+height/2;
+    sprintf(positionY, "%ld", position);
+    strcat(out, positionY);
+    
+    cvPutText(in, out, cvPoint(x0, y0-10), &font, cvScalar(0, 255, 0, 1));
+    cvRectangle(in, cvPoint(x0, y0), cvPoint(x0+width, y0+height), cvScalar(0, 255, 0, 1), 1, 8, 0);
+    cvCircle(tray, cvPoint(x0+width/2, y0+height/2), 5, cvScalar(255, 255, 255, 1), 10, 8, 0);
+    
+    free(out);
+    free(positionX);
+    free(positionY);
+}
+
 
 int main (int argc, char **argv)
 {
@@ -37,13 +73,15 @@ int main (int argc, char **argv)
     CvMat* flow = 0;
     CvMat* cflow = 0;
     
-    const char* cascade_name = "/Users/lukaszmichalak/Documents/Programowanie/OpenCV Projekt/OpenCV Projekt/haar cascades/haarcascade_mcs_eyepair_big.xml";
+    struct thingToTrack t1;
+    t1.filePath = projectPath haarCascadePath "haarcascade_mcs_eyepair_big.xml";
+    t1.name = "Oczy";
     
     CvHaarClassifierCascade* cascade;
     CvMemStorage* storage;
     CvSeq* faces;
   
-    cascade = (CvHaarClassifierCascade *) cvLoad(cascade_name, 0, 0, 0);
+    cascade = (CvHaarClassifierCascade *) cvLoad(t1.filePath, 0, 0, 0);
     cvNamedWindow("Open CV", CV_WINDOW_AUTOSIZE);
     CvCapture* capture = cvCreateCameraCapture(0);
     
@@ -69,7 +107,7 @@ int main (int argc, char **argv)
         for(i = 0; i < (faces ? faces->total : 0); i++)
         {
             CvRect *r = (CvRect *) cvGetSeqElem(faces, i);
-            drow(frame, tray, "Eyes", r->x, r->y, r->width, r->height, 20);
+            drow(frame, tray, t1.name, r->x, r->y, r->width, r->height, 20);
         }
         
         cvReleaseImage(&gray);
@@ -98,7 +136,7 @@ int main (int argc, char **argv)
         CV_SWAP(prevgray, gray2, temp);
     
         // Kontrolowanie
-        c = cvWaitKey(2);
+        c = cvWaitKey(1);
         
         switch(c)
         {
@@ -112,19 +150,4 @@ int main (int argc, char **argv)
                 break;
         }
     }
-}
-
-void drow(IplImage* in, IplImage* test, char* text, int x0, int y0, int width, int height, int size)
-{
-    CvFont font = cvFont(0.8, 2);
-    
-    char* test2 = "";
-    
-    char out[100];
-    strcat(out, text);
-    strcat(out, test2);
-    
-    cvPutText(in, out, cvPoint(x0, y0-10), &font, cvScalar(0, 255, 0, 1));
-    cvRectangle(in, cvPoint(x0, y0), cvPoint(x0+width, y0+height), cvScalar(0, 255, 0, 1), 1, 8, 0);
-    cvCircle(test, cvPoint(x0+width/2, y0+height/2), 5, cvScalar(255, 255, 255, 1), 10, 8, 0);
 }

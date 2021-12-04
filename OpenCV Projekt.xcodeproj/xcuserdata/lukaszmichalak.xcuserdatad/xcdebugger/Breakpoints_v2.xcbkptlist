@@ -14,8 +14,8 @@
             filePath = "OpenCV Projekt/main.c"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "86"
-            endingLineNumber = "86"
+            startingLineNumber = "124"
+            endingLineNumber = "124"
             landmarkName = "main(argc, argv)"
             landmarkType = "9">
          </BreakpointContent>
