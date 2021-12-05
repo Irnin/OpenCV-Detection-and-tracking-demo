@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		822CDFF7275CAC1F00DF7B98 /* detectionAndTracking.c in Sources */ = {isa = PBXBuildFile; fileRef = 822CDFF6275CAC1F00DF7B98 /* detectionAndTracking.c */; };
 		828B4FC8274972AC00E7B243 /* main.c in Sources */ = {isa = PBXBuildFile; fileRef = 828B4FC7274972AC00E7B243 /* main.c */; };
 /* End PBXBuildFile section */
 
@@ -23,6 +24,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		822CDFF5275CAC1F00DF7B98 /* detectionAndTracking.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = detectionAndTracking.h; sourceTree = "<group>"; };
+		822CDFF6275CAC1F00DF7B98 /* detectionAndTracking.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = detectionAndTracking.c; sourceTree = "<group>"; };
 		828B4FC4274972AC00E7B243 /* OpenCV Projekt */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "OpenCV Projekt"; sourceTree = BUILT_PRODUCTS_DIR; };
 		828B4FC7274972AC00E7B243 /* main.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = main.c; sourceTree = "<group>"; };
 		828B4FCE2749730900E7B243 /* OpenCV Projekt.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "OpenCV Projekt.entitlements"; sourceTree = "<group>"; };
@@ -60,6 +63,8 @@
 			children = (
 				828B4FCE2749730900E7B243 /* OpenCV Projekt.entitlements */,
 				828B4FC7274972AC00E7B243 /* main.c */,
+				822CDFF5275CAC1F00DF7B98 /* detectionAndTracking.h */,
+				822CDFF6275CAC1F00DF7B98 /* detectionAndTracking.c */,
 			);
 			path = "OpenCV Projekt";
 			sourceTree = "<group>";
@@ -121,6 +126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				822CDFF7275CAC1F00DF7B98 /* detectionAndTracking.c in Sources */,
 				828B4FC8274972AC00E7B243 /* main.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
