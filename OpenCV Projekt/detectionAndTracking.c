@@ -30,3 +30,17 @@ void drow(IplImage* in, IplImage* tray, char* text, int x0, int y0, int width, i
     free(positionX);
     free(positionY);
 }
+
+void drawOptFlowMap(CvMat* flow, CvMat* cflowmap, int step, double scale, CvScalar color, IplImage* test)
+{
+    int x, y;
+    for( y = 0; y < cflowmap->rows; y += step)
+    {
+        for( x = 0; x < cflowmap->cols; x += step)
+        {
+            CvPoint2D32f fxy = CV_MAT_ELEM(*flow, CvPoint2D32f, y, x);
+            if(x != cvRound(x+fxy.x) && y != cvRound(y+fxy.y))
+                cvLine(test, cvPoint(x,y), cvPoint(cvRound(x+fxy.x), cvRound(y+fxy.y)), color, 10, 8, 0);
+        }
+    }
+}

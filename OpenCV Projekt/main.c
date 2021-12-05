@@ -4,6 +4,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 #include "detectionAndTracking.h"
 
 //Path to main project
@@ -17,18 +18,6 @@ struct thingToTrack
     char* filePath;
     char* name;
 };
-
-static void drawOptFlowMap(CvMat* flow, CvMat* cflowmap, int step, double scale, CvScalar color, IplImage* test)
-{
-    int x, y;
-    for( y = 0; y < cflowmap->rows; y += step)
-        for( x = 0; x < cflowmap->cols; x += step)
-        {
-            CvPoint2D32f fxy = CV_MAT_ELEM(*flow, CvPoint2D32f, y, x);
-            if(x != cvRound(x+fxy.x) && y != cvRound(y+fxy.y))
-                cvLine(test, cvPoint(x,y), cvPoint(cvRound(x+fxy.x), cvRound(y+fxy.y)), color, 10, 8, 0);
-        }
-}
 
 int main (int argc, char **argv)
 {
@@ -107,15 +96,12 @@ int main (int argc, char **argv)
             cvCvtColor(prevgray, cflow, CV_GRAY2BGR);
             drawOptFlowMap(flow, cflow, 16, 1.5, CV_RGB(255, 0, 0), frame);
         }
-        
-        cvShowImage("Open CV", frame);
-        
+
         CvMat* temp;
         CV_SWAP(prevgray, gray2, temp);
-    
-        // Kontrolowanie
-        keyboardCharInput = cvWaitKey(1);
         
+        // Kontrolowanie
+        keyboardCharInput = cvWaitKey(2);
         switch(keyboardCharInput)
         {
             case (int)'Q':
@@ -128,5 +114,7 @@ int main (int argc, char **argv)
                 return 0;
                 break;
         }
+        
+        cvShowImage("Open CV", frame);
     }
 }
