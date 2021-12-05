@@ -1,6 +1,6 @@
 #include "detectionAndTracking.h"
 
-void drow(IplImage* in, IplImage* tray, char* text, int x0, int y0, int width, int height, int size)
+void drawDetection(IplImage* in, IplImage* tray, char* text, int x0, int y0, int width, int height, int size)
 {
     CvFont font = cvFont(0.8, 2);
     
@@ -31,7 +31,7 @@ void drow(IplImage* in, IplImage* tray, char* text, int x0, int y0, int width, i
     free(positionY);
 }
 
-void drawOptFlowMap(CvMat* flow, CvMat* cflowmap, int step, double scale, CvScalar color, IplImage* test)
+void drawTracking(CvMat* flow, CvMat* cflowmap, int step, double scale, CvScalar color, IplImage* test)
 {
     int x, y;
     for( y = 0; y < cflowmap->rows; y += step)
@@ -40,7 +40,9 @@ void drawOptFlowMap(CvMat* flow, CvMat* cflowmap, int step, double scale, CvScal
         {
             CvPoint2D32f fxy = CV_MAT_ELEM(*flow, CvPoint2D32f, y, x);
             if(x != cvRound(x+fxy.x) && y != cvRound(y+fxy.y))
+            {
                 cvLine(test, cvPoint(x,y), cvPoint(cvRound(x+fxy.x), cvRound(y+fxy.y)), color, 10, 8, 0);
+            }
         }
     }
 }

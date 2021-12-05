@@ -13,17 +13,11 @@
 //1: English 2: Polish
 #define languageCode 1
 
-struct thingToTrack
-{
-    char* filePath;
-    char* name;
-};
-
 int main (int argc, char **argv)
 {
-    int keyboardCharInput;
     int i;
-    short loop = 1;
+    int keyboardCharInput;
+    CvHaarClassifierCascade* cascade;
     
     IplImage* frame = 0;
     IplImage* gray = 0;
@@ -34,7 +28,10 @@ int main (int argc, char **argv)
     CvMat* flow = 0;
     CvMat* cflow = 0;
     
-    struct thingToTrack* haarCascade = malloc(sizeof(struct thingToTrack));;
+    CvMemStorage* storage;
+    CvSeq* faces;
+    
+    struct thingToTrack* haarCascade = malloc(sizeof(struct thingToTrack));
     
     haarCascade -> filePath = projectPath "haarcascade_mcs_eyepair_big.xml";
     
@@ -43,27 +40,29 @@ int main (int argc, char **argv)
     #elif languageCode == 2
         haarCascade -> name = "Oczy";
     #endif
-    
-    CvHaarClassifierCascade* cascade;
-    CvMemStorage* storage;
-    CvSeq* faces;
   
     cascade = (CvHaarClassifierCascade *) cvLoad(haarCascade -> filePath, 0, 0, 0);
     cvNamedWindow("Open CV", CV_WINDOW_AUTOSIZE);
     CvCapture* capture = cvCreateCameraCapture(0);
     
     assert(capture != NULL);
+    storage = cvCreateMemStorage(0);
   
-    while(loop == 1) // główna pętla
+    // Main loop of the program
+    for(;;)
     {
-        int firstFrame = gray2 == 0;
-        
         frame = cvQueryFrame(capture);
-        
-        // Rozpoznawanie oczu
         gray = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 1);
         tray = cvCreateImage(cvGetSize(frame), IPL_DEPTH_8U, 3);
-        storage = cvCreateMemStorage(0);
+        
+        if(!gray2)
+        {
+            gray2 = cvCreateMat(tray->height, tray->width, CV_8UC1);
+            prevgray = cvCreateMat(gray2->rows, gray2->cols, gray2->type);
+            flow = cvCreateMat(gray2->rows, gray2->cols, CV_32FC2);
+            cflow = cvCreateMat(gray2->rows, gray2->cols, CV_8UC3);
+        }
+
         cvClearMemStorage(storage);
         cvCvtColor(frame, gray, CV_BGR2GRAY);
         cvSet(tray, cvScalar(0, 0, 0, 0), NULL);
@@ -74,33 +73,25 @@ int main (int argc, char **argv)
         for(i = 0; i < (faces ? faces->total : 0); i++)
         {
             CvRect *r = (CvRect *) cvGetSeqElem(faces, i);
-            drow(frame, tray, haarCascade -> name, r->x, r->y, r->width, r->height, 20);
+            drawDetection(frame, tray, haarCascade -> name, r->x, r->y, r->width, r->height, 20);
         }
         
         cvReleaseImage(&gray);
         
-        // Śledzenie
-        if(!gray2)
-        {
-            gray2 = cvCreateMat(tray->height, tray->width, CV_8UC1);
-            prevgray = cvCreateMat(gray2->rows, gray2->cols, gray2->type);
-            flow = cvCreateMat(gray2->rows, gray2->cols, CV_32FC2);
-            cflow = cvCreateMat(gray2->rows, gray2->cols, CV_8UC3);
-        }
-        
+        int firstFrame = gray2 == 0;
         cvCvtColor(tray, gray2, CV_BGR2GRAY);
         
         if( !firstFrame )
         {
             cvCalcOpticalFlowFarneback(prevgray, gray2, flow, 0.5, 3, 15, 3, 5, 1.2, 0);
             cvCvtColor(prevgray, cflow, CV_GRAY2BGR);
-            drawOptFlowMap(flow, cflow, 16, 1.5, CV_RGB(255, 0, 0), frame);
+            drawTracking(flow, cflow, 16, 1.5, CV_RGB(255, 0, 0), frame);
         }
 
         CvMat* temp;
         CV_SWAP(prevgray, gray2, temp);
         
-        // Kontrolowanie
+        // Control
         keyboardCharInput = cvWaitKey(2);
         switch(keyboardCharInput)
         {
